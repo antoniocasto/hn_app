@@ -14,11 +14,18 @@ dependencies:
 
   cupertino_icons: ^0.1.2
   url_launcher: ^5.2.5
+  built_value: ^7.0.0
+  built_collection: ^4.3.0
+
+
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  built_value_generator: ^7.0.0
+
 
 
 

@@ -1,24 +1,34 @@
 class Article {
   final String text;
-  final String domain;
+  final String url;
   final String by;
   final String age;
   final int score;
   final int commentsCount;
 
   const Article(
-      {this.text,
-      this.domain,
-      this.by,
-      this.age,
-      this.score,
-      this.commentsCount});
+      {this.text, this.url, this.by, this.age, this.score, this.commentsCount});
+
+  factory Article.fromJson(Map<String, dynamic> json) {
+    //Costruttore alternativo
+    if (json == null) {
+      return null;
+    }
+
+    return Article(
+        text: json['text'] ??
+            "[null]", // ?? e' un operatore ternario. Se il valore non c'e mette quello che gli indico
+        url: json['url'],
+        by: json['by'],
+        age: json['age'] ?? 0,
+        score: json['score']);
+  }
 }
 
 final articles = [
   Article(
     text: "Juventus wins the game.",
-    domain: "Juventus.com",
+    url: "Juventus.com",
     by: "jvvv",
     age: "25",
     score: 177,
@@ -26,63 +36,63 @@ final articles = [
   ),
   Article(
     text: "Milan wins the game.",
-    domain: "Milan.com",
+    url: "Milan.com",
     by: "jvvv",
     age: "25",
     score: 33,
     commentsCount: 22,
   ),
   Article(
-    text: "Inter wins the game.",
-    domain: "Inter.com",
+    text: "Inter winsxxxx the game.",
+    url: "Inter.com",
     by: "jvvv",
     age: "25",
     score: 1,
     commentsCount: 1,
   ),
   Article(
-    text: "Inter wins the game.",
-    domain: "Inter.com",
+    text: "Inter winscccc the game.",
+    url: "Inter.com",
     by: "jvvv",
     age: "25",
     score: 1,
     commentsCount: 1,
   ),
   Article(
-    text: "Inter wins the game.",
-    domain: "Inter.com",
+    text: "Inter winsvvvv the game.",
+    url: "Inter.com",
     by: "jvvv",
     age: "25",
     score: 1,
     commentsCount: 1,
   ),
   Article(
-    text: "Inter wins the game.",
-    domain: "Inter.com",
+    text: "Inter winsbbbb the game.",
+    url: "Inter.com",
     by: "jvvv",
     age: "25",
     score: 1,
     commentsCount: 1,
   ),
   Article(
-    text: "Inter wins the game.",
-    domain: "Inter.com",
+    text: "Inter winsnnnnn the game.",
+    url: "Inter.com",
     by: "jvvv",
     age: "25",
     score: 1,
     commentsCount: 1,
   ),
   Article(
-    text: "Inter wins the game.",
-    domain: "Inter.com",
+    text: "Inter winsmmmm the game.",
+    url: "Inter.com",
     by: "jvvv",
     age: "25",
     score: 1,
     commentsCount: 1,
   ),
   Article(
-    text: "Inter wins the game.",
-    domain: "Inter.com",
+    text: "Inter wins,,,, the game.",
+    url: "Inter.com",
     by: "jvvv",
     age: "25",
     score: 1,

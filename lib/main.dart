@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'src/articles.dart';
+import 'src/article.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() => runApp(MyApp());
@@ -53,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildItem(Article article) {
     return Padding(
+      key: Key(article.text),
       padding: const EdgeInsets.all(16.0),
       child: ExpansionTile(
         title: Text(
@@ -71,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
               IconButton(
                 icon: Icon(Icons.launch),
                 onPressed: () async {
-                  final fakeUrl = "http://${article.domain}";
+                  final fakeUrl = "http://${article.url}";
 
                   if (await canLaunch(fakeUrl)) {
                     launch(fakeUrl);
