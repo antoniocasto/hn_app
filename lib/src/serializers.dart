@@ -3,7 +3,7 @@ library serializers;
 import 'package:built_value/serializer.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/standard_json_plugin.dart';
-import 'article.dart';
+import 'package:hn_app/src/article.dart';
 
 part 'package:hn_app/src/serializers.g.dart';
 

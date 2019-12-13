@@ -2,7 +2,7 @@ import 'dart:convert' as json;
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_collection/built_collection.dart';
-import 'serializers.dart';
+import 'package:hn_app/src/serializers.dart';
 
 part 'article.g.dart';
 
@@ -13,6 +13,10 @@ abstract class Article implements Built<Article, ArticleBuilder> {
 
   @nullable
   bool get deleted;
+
+  /// This is the type of the article.
+  ///
+  /// It can be any of these: "job", "story", "comment", "poll", or "pollopt".
   String get type;
   String get by;
   int get time;
@@ -40,10 +44,9 @@ abstract class Article implements Built<Article, ArticleBuilder> {
 }
 
 List<int> parseTopStories(String jsonStr) {
-  return [];
-//  final parsed = json.jsonDecode(jsonStr);
-//  final listOfIds = List<int>.from(parsed);
-//  return listOfIds;
+  final parsed = json.jsonDecode(jsonStr);
+  final listOfIds = List<int>.from(parsed);
+  return listOfIds;
 }
 
 Article parseArticle(String jsonStr) {
