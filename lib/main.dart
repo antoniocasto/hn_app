@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1, //setto come attiva la seconda
+        currentIndex: 0, //setto come attiva la seconda
         items: [
           BottomNavigationBarItem(
             title: Text('Top Stories'),
@@ -71,9 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: (index) {
           //index e' l'indice dell'icona tappata
           if (index == 0) {
-            print('Top Stories tapped');
+            widget.bloc.storiesType.add(StoriesType.topStories);
           } else {
-            print('New Stories tapped');
+            widget.bloc.storiesType.add(StoriesType.newStories);
           }
         },
       ),
