@@ -6,8 +6,6 @@ import 'package:hn_app/src/article.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HackerNewsBloc {
-  Stream<UnmodifiableListView<Article>> get articles => _articlesSubject.stream;
-
   final _articlesSubject = BehaviorSubject<UnmodifiableListView<Article>>();
 
   var _articles = <Article>[];
@@ -18,6 +16,8 @@ class HackerNewsBloc {
           UnmodifiableListView(_articles)); //pusha l'attuale lista di articles
     });
   }
+
+  Stream<UnmodifiableListView<Article>> get articles => _articlesSubject.stream;
 
   List<int> _ids = [17392995];
 
