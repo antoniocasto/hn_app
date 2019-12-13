@@ -13,4 +13,4 @@ part 'package:hn_app/src/serializers.g.dart';
 Serializers serializers = _$serializers;
 
 Serializers standardSerializers =
-    (serializers.toBuilder()..addPlugin(new StandardJsonPlugin())).build();
+    (serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
