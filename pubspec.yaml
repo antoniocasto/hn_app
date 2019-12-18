@@ -37,3 +37,15 @@ flutter:
 
   uses-material-design: true
 
+  fonts:
+    - family: Garamond
+      fonts:
+        - asset: fonts/EBGaramond-Regular.ttf
+        - asset: fonts/EBGaramond-Italic.ttf
+          style: italic
+        - asset: fonts/EBGaramond-Bold.ttf
+          weight: 700
+        - asset: fonts/EBGaramond-BoldItalic.ttf
+          weight: 700
+          style: italic
+

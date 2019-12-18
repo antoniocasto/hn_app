@@ -14,6 +14,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final HackerNewsBloc bloc;
+  static const primaryColor = Colors.white;
 
   MyApp({Key key, this.bloc}) : super(key: key);
 
@@ -23,7 +24,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+        primaryColor: primaryColor,
+        scaffoldBackgroundColor: primaryColor,
+        canvasColor: Colors.black,
+        textTheme: Theme.of(context).textTheme.copyWith(
+              caption: TextStyle(
+                color: Colors.white54,
+              ),
+              subhead: TextStyle(
+                fontFamily: 'Garamond',
+                fontSize: 10.0,
+              ),
+            ),
       ),
       home: MyHomePage(
         title: 'Flutter Hacker News',
@@ -52,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         leading: LoadingInfo(widget.bloc.isLoading),
+        elevation: 0.0,
       ),
       body: StreamBuilder<UnmodifiableListView<Article>>(
         stream: widget.bloc.articles,
@@ -90,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildItem(Article article) {
     return Padding(
       key: Key(article.title),
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 12.0),
       child: ExpansionTile(
         title: Text(
           article.title ?? '[null]',
@@ -98,22 +111,30 @@ class _MyHomePageState extends State<MyHomePage> {
             fontSize: 24.0,
           ),
         ),
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text(
-                '${article.descendants} comments',
-              ),
-              IconButton(
-                icon: Icon(Icons.launch),
-                onPressed: () async {
-                  if (await canLaunch(article.url)) {
-                    launch(article.url);
-                  }
-                },
-              ),
-            ],
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  '${article.descendants} comments',
+                ),
+                SizedBox(
+                  width: 16.0,
+                ),
+                IconButton(
+                  icon: Icon(Icons.launch),
+                  onPressed: () async {
+                    if (await canLaunch(article.url)) {
+                      launch(article.url);
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -149,23 +170,22 @@ class _LoadingInfoState extends State<LoadingInfo>
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: widget._isLoading,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-//        if (snapshot.hasData && snapshot.data) {
-        _controller.forward().then((f) {
-          _controller.reverse();
-        });
-        return FadeTransition(
-          child: Icon(FontAwesomeIcons.hackerNewsSquare),
-          opacity: Tween(begin: .5, end: 1.0).animate(
-            CurvedAnimation(
-              curve: Curves.easeIn,
-              parent: _controller,
+      builder: (BuildContext context, AsyncSnapshot<bool> loading) {
+        if (loading.hasData && loading.data) {
+          _controller.forward().then((f) {
+            _controller.reverse();
+          });
+          return FadeTransition(
+            child: Icon(FontAwesomeIcons.hackerNewsSquare),
+            opacity: Tween(begin: .5, end: 1.0).animate(
+              CurvedAnimation(
+                curve: Curves.easeIn,
+                parent: _controller,
+              ),
             ),
-          ),
-        );
-//        }
-//        _controller.reverse();
-//        return Container();
+          );
+        }
+        return Container();
       },
     );
   }
