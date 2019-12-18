@@ -7,7 +7,18 @@ import 'package:rxdart/rxdart.dart';
 
 enum StoriesType { topStories, newStories }
 
+class HackerNewsApiError extends Error {
+  final String message;
+
+  HackerNewsApiError(this.message);
+}
+
 class HackerNewsBloc {
+  static const _baseUrl = 'https://hacker-news.firebaseio.com/v0/';
+
+  final _isLoadingSubject = BehaviorSubject<
+      bool>(); //Dopo la sottoscrizione mi fornisce il valore piu recente
+
   final _articlesSubject = BehaviorSubject<UnmodifiableListView<Article>>();
 
   var _articles = <Article>[];
@@ -20,7 +31,7 @@ class HackerNewsBloc {
     _initializeArticles(); //trucco per usare async e await all'interno di un costruttore o funzione non asincrono
 
     _storiesTypeController.stream.listen((storiesType) async {
-      _getArticlesAndUpdate(await _getIds(StoriesType.topStories));
+      _getArticlesAndUpdate(await _getIds(storiesType));
     });
   }
 
@@ -42,14 +53,9 @@ class HackerNewsBloc {
     return parseTopStories(response.body).take(10).toList();
   }
 
-  static const _baseUrl = 'https://hacker-news.firebaseio.com/v0/';
-
   Stream<UnmodifiableListView<Article>> get articles => _articlesSubject.stream;
 
   Stream<bool> get isLoading => _isLoadingSubject.stream;
-
-  final _isLoadingSubject = BehaviorSubject<
-      bool>(); //Dopo la sottoscrizione mi fornisce il valore piu recente
 
   Future<Null> _updateArticles(List<int> articleIds) async {
     final futureArticles = articleIds.map((id) => _getArticle(id));
@@ -66,7 +72,7 @@ class HackerNewsBloc {
     if (storyRes.statusCode == 200) {
       return parseArticle(storyRes.body);
     }
-    throw StateError('Article $id couldn\'t be fetched.');
+    throw HackerNewsApiError('Article $id couldn\'t be fetched.');
   }
 
   _getArticlesAndUpdate(List<int> ids) async {
@@ -75,10 +81,4 @@ class HackerNewsBloc {
     _articlesSubject.add(UnmodifiableListView(_articles));
     _isLoadingSubject.add(false);
   }
-}
-
-class HackerNewsApiError extends Error {
-  final String message;
-
-  HackerNewsApiError(this.message);
 }

@@ -35,10 +35,9 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   final HackerNewsBloc bloc;
+  final String title;
 
   MyHomePage({Key key, this.title, this.bloc}) : super(key: key);
-
-  final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -151,22 +150,22 @@ class _LoadingInfoState extends State<LoadingInfo>
     return StreamBuilder(
       stream: widget._isLoading,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.hasData && snapshot.data) {
-          _controller.forward().then((f) {
-            _controller.reverse();
-          });
-          return FadeTransition(
-            child: Icon(FontAwesomeIcons.hackerNewsSquare),
-            opacity: Tween(begin: .5, end: 1.0).animate(
-              CurvedAnimation(
-                curve: Curves.easeIn,
-                parent: _controller,
-              ),
+//        if (snapshot.hasData && snapshot.data) {
+        _controller.forward().then((f) {
+          _controller.reverse();
+        });
+        return FadeTransition(
+          child: Icon(FontAwesomeIcons.hackerNewsSquare),
+          opacity: Tween(begin: .5, end: 1.0).animate(
+            CurvedAnimation(
+              curve: Curves.easeIn,
+              parent: _controller,
             ),
-          );
-        }
-        _controller.reverse();
-        return Container();
+          ),
+        );
+//        }
+//        _controller.reverse();
+//        return Container();
       },
     );
   }
