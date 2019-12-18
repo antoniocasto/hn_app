@@ -65,6 +65,16 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         leading: LoadingInfo(widget.bloc.isLoading),
         elevation: 0.0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.search,
+            ),
+            onPressed: () {
+              showSearch(context: context, delegate: ArticleSearch());
+            },
+          )
+        ],
       ),
       body: StreamBuilder<UnmodifiableListView<Article>>(
         stream: widget.bloc.articles,
@@ -188,5 +198,39 @@ class _LoadingInfoState extends State<LoadingInfo>
         return Container();
       },
     );
+  }
+}
+
+class ArticleSearch extends SearchDelegate<Article> {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Container();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Text(query);
   }
 }
