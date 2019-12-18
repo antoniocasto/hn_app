@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Text(
-                article.type,
+                '${article.descendants} comments',
               ),
               IconButton(
                 icon: Icon(Icons.launch),

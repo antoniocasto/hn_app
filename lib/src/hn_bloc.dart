@@ -14,6 +14,9 @@ class HackerNewsApiError extends Error {
 }
 
 class HackerNewsBloc {
+  HashMap<int, Article>
+      _cachedArticles; //Creo una cache per gli articoli cosi velocizzo l'app
+
   static const _baseUrl = 'https://hacker-news.firebaseio.com/v0/';
 
   final _isLoadingSubject = BehaviorSubject<
@@ -28,6 +31,7 @@ class HackerNewsBloc {
   final _storiesTypeController = StreamController<StoriesType>();
 
   HackerNewsBloc() {
+    _cachedArticles = HashMap<int, Article>();
     _initializeArticles(); //trucco per usare async e await all'interno di un costruttore o funzione non asincrono
 
     _storiesTypeController.stream.listen((storiesType) async {
@@ -67,12 +71,18 @@ class HackerNewsBloc {
 
   Future<Article> _getArticle(int id) async {
     //per scaricare l'articolo
-    final storyUrl = '${_baseUrl}item/$id.json';
-    final storyRes = await http.get(storyUrl);
-    if (storyRes.statusCode == 200) {
-      return parseArticle(storyRes.body);
+
+    if (!_cachedArticles.containsKey(id)) {
+      //Se l'articolo di cui ricevo l'id non e' cachato, lo scarico nuovamente
+      final storyUrl = '${_baseUrl}item/$id.json';
+      final storyRes = await http.get(storyUrl);
+      if (storyRes.statusCode == 200) {
+        _cachedArticles[id] = parseArticle(storyRes.body);
+      } else {
+        throw HackerNewsApiError('Article $id couldn\'t be fetched.');
+      }
     }
-    throw HackerNewsApiError('Article $id couldn\'t be fetched.');
+    return _cachedArticles[id];
   }
 
   _getArticlesAndUpdate(List<int> ids) async {
